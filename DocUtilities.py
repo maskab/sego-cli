@@ -6,11 +6,11 @@ MAIN_DIR = os.getcwd()
 
 def version():
 
-    return '0.1.0.0'
+    return '0.1'
 
 
 def main_docstring():
-    return colored("Sego","green")+" command line interface version: " + colored(version(),"yellow")
+    return colored("equant-scheduler","green")+" command line interface version: " + colored(version(),"yellow")
 
 
 def doc(docstring):

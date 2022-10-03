@@ -1,41 +1,45 @@
+from Utilities.ConfigManager import ConfigManager
 
-import fire
+try:
+    import fire
+except ModuleNotFoundError:
+    pass
+try:
+    from termcolor import colored
+except ModuleNotFoundError:
+    pass
 from DocUtilities import *
-from ApplicationUtilities import *
-from ControllerUtilities import *
-from ListUtilities import *
-from MiddlewareUtilities import *
-from models.targets import Targets
-from termcolor import colored
-from orator.exceptions.query import QueryException
+from SetupUtilities import *
+from ProjectUtilities import *
+from ConfigUtilities import *
+
+
 
 
 @doc(main_docstring())
-class Sego(object):
+class Scheduler(object):
     def __init__(self):
         pass
 
-    @doc(ApplicationUtilities().get_application_doc())
-    def app(self,task,**kwargs):
-        application_utilities = ApplicationUtilities()
-        application_utilities.run(task=task,kwargs=kwargs)
+    @doc(ConfigUtilities().get_config_doc())
+    def config(self,action,**kwargs):
+        config_utilities = ConfigUtilities()
+        config_utilities.run(action=action,kwargs=kwargs)
 
-    @doc(ControllerUtilities().get_controller_doc())
-    def controller(self,task,**kwargs):
-        controller_utilities = ControllerUtilities()
-        controller_utilities.run(task=task,kwargs=kwargs)
+    @doc(ProjectUtilities().get_project_doc())
+    def project(self, action, **kwargs):
+        project_utilities = ProjectUtilities()
+        project_utilities.run(action=action, kwargs=kwargs)
 
-    @doc(MiddlewareUtilities().get_middleware_doc())
-    def middleware(self,task,**kwargs):
-        middleware_utilities = MiddlewareUtilities()
-        middleware_utilities.run(task=task,kwargs=kwargs)
+
 if __name__ == '__main__':
+    config = ConfigManager()
+    config.create_conf_directory()
+    config.load_config()
     setup_utils = SetupUtilities()
-    db = DatabaseUtilities()
-    db_path = db.get_database_path()
-    home = setup_utils.get_home_dir()
-    if os.path.exists(db_path):
-        fire.Fire(Sego)
+
+    if setup_utils.check_setup():
+        fire.Fire(Scheduler)
     else:
         setup_utils.setup()
-
+        print("dd")
